@@ -17,15 +17,17 @@ HEADERS_TF = \
   tflite_inference.h \
   tensorResultToPassOn.h \
   tensorResultToPassOnFloat.h \
-  tensorResultToPassOnUint8.h 
-
+  tensorResultToPassOnUint8.h \
+  coralIcarusInference.h \
+  coralIcarusInterface.h
 
 SOURCES_TF = \
   general_inferencer.cpp \
   tflite_inference.cpp \
   tensorResultToPassOn.cpp \
   tensorResultToPassOnFloat.cpp \
-  tensorResultToPassOnUint8.cpp 
+  tensorResultToPassOnUint8.cpp \
+  coralIcarusInference.cpp
 
 noinst_HEADERS = $(HEADERS_TF)
 libposenetimx8_la_SOURCES = $(SOURCES_TF)
@@ -42,7 +44,7 @@ libposenetimx8_la_LIBADD = \
   -lgooglecoraledgetpuposenet
 
 # package name
-PACKAGE_NAME=posenetimx8
+PACKAGE_NAME=icarusTensorflowInferencer
 
 # README
 pkgdatadir = $(datadir)/$(PACKAGE_NAME)

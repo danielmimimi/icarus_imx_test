@@ -7,10 +7,10 @@
 #include "tensorResultToPassOnFloat.h"
 #include "tensorResultToPassOn.h"
 #include "tensorResultToPassOnUint8.h"
-#include "general_inferencer.h"
+#include "coralIcarusInference.h"
 
 
-class coralIcarusInference 
+class coralIcarusInference
 {
 public:
     coralIcarusInference();
@@ -22,9 +22,6 @@ public:
         int num_threads);
 
     void inference(const std::vector<uint8_t>& inputImage, std::vector<tensorResultToPassOn*>& outResults);
-
-private:
-    generalInferencer mInferencer;
 };
 
 #endif

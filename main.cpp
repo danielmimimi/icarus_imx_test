@@ -1,4 +1,4 @@
-#include "coralIcarusInference.h"
+#include "coralIcarusInterface.h"
 #include "tensorResultToPassOn.h
 #include "tensorResultToPassOnFloat.h
 #include "tensorResultToPassOnUint8.h
