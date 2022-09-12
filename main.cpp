@@ -8,6 +8,8 @@
 #include <fstream>
 #include <string>
 
+#include <chrono>
+
 typedef unsigned char uint8_t;
 
 constexpr size_t kBmpFileHeaderSize = 14;
@@ -80,16 +82,24 @@ int main(void)
 
   std::string modelName = "posenet_mobilenet_v1_075_353_481_quant_decoder.tflite";
   std::vector<int32_t> outImageDimensions;
-  inferencer.init(modelName, outImageDimensions, 1, 1);
+  inferencer.init(modelName, outImageDimensions, 2, 4);
 
   std::cout
       << "inputsize 1 :" + outImageDimensions[1] << std::endl;
 
   ImageDims image_dims;
   std::vector<uint8_t> input = ReadBmp("persons.bmp", &image_dims);
+  auto start = std::chrono::high_resolution_clock::now();
+  int amountOfInferences = 10000;
+  for (int i = 0; i < amountOfInferences; i++)
+  {
+    std::vector<tensorResultToPassOn *> outResults;
+    inferencer.inference(input, outResults);
+  }
+  auto stop = std::chrono::high_resolution_clock::now();
+  auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-  std::vector<tensorResultToPassOn *> outResults;
-  inferencer.inference(input, outResults);
+  std::cout << duration.count() / amountOfInferences << "Microseconds" << std::endl;
 
   return 0;
 }

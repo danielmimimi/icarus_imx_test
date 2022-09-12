@@ -5,7 +5,6 @@
 
 #include "tflite_inference.h"
 #include "tensorResultToPassOn.h"
-#include <cstring>
 
 class generalInferencer : public tflite_inference_t
 {
