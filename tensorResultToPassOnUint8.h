@@ -5,14 +5,15 @@
 #include <vector>
 #include "tensorResultToPassOn.h"
 
-class tensorResultToPassOnUint8 : public tensorResultToPassOn {
+class tensorResultToPassOnUint8 : public tensorResultToPassOn
+{
 public:
 	tensorResultToPassOnUint8();
 	~tensorResultToPassOnUint8();
 
-	tensorResultToPassOnUint8(const tensorResultToPassOnUint8& obj);
+	tensorResultToPassOnUint8(const tensorResultToPassOnUint8 &obj);
 
-	uint8_t* data;
+	uint8_t *data;
 };
 
 #endif
