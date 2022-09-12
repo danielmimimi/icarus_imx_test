@@ -42,7 +42,7 @@ std::vector<uint8_t> ReadBmp(const std::string &filename, ImageDims *out_dims)
   if (offset > kBmpHeaderSize)
     file.seekg(offset - kBmpHeaderSize, std::ios::cur);
 
-  int width = ToInt32(&info_header[4]);
+  int width = ToInt32(&info_header[4]);./
 
   int height = ToInt32(&info_header[8]);
   const bool top_down = height < 0;
@@ -83,7 +83,7 @@ int main(void)
   inferencer.init(modelName, outImageDimensions, 1, 1);
 
   std::cout
-      << "inputsize 0 :" + outImageDimensions.at(0) << std::endl;
+      << "inputsize 1 :" + outImageDimensions[1] << std::endl;
 
   ImageDims image_dims;
   std::vector<uint8_t> input = ReadBmp("persons.bmp", &image_dims);

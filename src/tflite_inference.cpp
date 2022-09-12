@@ -39,7 +39,6 @@
 #include <map>
 #include <fstream>
 
-
 tflite_inference_t::tflite_inference_t()
 {
 }
@@ -51,20 +50,22 @@ tflite_inference_t::~tflite_inference_t()
 }
 
 int tflite_inference_t::init(
-  const std::string& model,
-  int use_nnapi,
-  int num_threads)
+    const std::string &model,
+    int use_nnapi,
+    int num_threads)
 {
   // check model existence
   std::ifstream file(model);
-  if (!file) {
-    printf ("Failed to open %s", model.c_str());
+  if (!file)
+  {
+    printf("Failed to open %s", model.c_str());
     return ERROR;
   }
 
   model_ = tflite::FlatBufferModel::BuildFromFile(model.c_str());
-  if (!model_) {
-    printf ("Failed to mmap model %s", model.c_str());
+  if (!model_)
+  {
+    printf("Failed to mmap model %s", model.c_str());
     return ERROR;
   }
 
@@ -75,8 +76,9 @@ int tflite_inference_t::init(
 #endif
 
   tflite::InterpreterBuilder(*model_, resolver)(&interpreter_);
-  if (!interpreter_) {
-    printf ("Failed to construct TFLite interpreter");
+  if (!interpreter_)
+  {
+    printf("Failed to construct TFLite interpreter");
     return ERROR;
   }
   bool allow_fp16 = false;
@@ -84,20 +86,22 @@ int tflite_inference_t::init(
 #ifdef BUILD_WITH_EDGETPU
   // Bind edgeTpu context with interpreter.
   std::shared_ptr<edgetpu::EdgeTpuContext> edgetpu_context = edgetpu::EdgeTpuManager::GetSingleton()->OpenDevice();
-  interpreter_->SetExternalContext(kTfLiteEdgeTpuContext, (TfLiteExternalContext*)edgetpu_context.get());
-  interpreter_->SetNumThreads(1);// num_of_thread is ignored
+  interpreter_->SetExternalContext(kTfLiteEdgeTpuContext, (TfLiteExternalContext *)edgetpu_context.get());
+  interpreter_->SetNumThreads(1); // num_of_thread is ignored
 #else
   interpreter_->SetNumThreads(num_threads);
 #endif
 
   apply_delegate(use_nnapi);
 
-  if (interpreter_->AllocateTensors() != kTfLiteOk) {
-    printf ("Failed to allocate TFLite tensors!");
+  if (interpreter_->AllocateTensors() != kTfLiteOk)
+  {
+    printf("Failed to allocate TFLite tensors!");
     return ERROR;
   }
 
-  if (verbose_) {
+  if (verbose_)
+  {
     tflite::PrintInterpreterState(interpreter_.get());
   }
 
@@ -110,15 +114,17 @@ int tflite_inference_t::init(
   height = shape[1];
   width = shape[2];
   channel = shape[3];
-  if ((width <= 0) || (height <= 0) || (channel != 3)) {
+  if ((width <= 0) || (height <= 0) || (channel != 3))
+  {
     printf("Not supported input shape");
     return ERROR;
   }
   size_t sz = 0;
-  uint8_t* p = 0;
+  uint8_t *p = 0;
   int ret = get_input_tensor(&p, &sz);
   std::memset(p, 0, sz);
-  if (interpreter_->Invoke() != kTfLiteOk) {
+  if (interpreter_->Invoke() != kTfLiteOk)
+  {
     printf("Failed to invoke TFLite interpreter");
     return ERROR;
   }
@@ -127,33 +133,44 @@ int tflite_inference_t::init(
 }
 
 int tflite_inference_t::apply_delegate(
-  int use_nnapi)
+    int use_nnapi)
 {
   // assume TFLite v2.0 or newer
   std::map<std::string, tflite::Interpreter::TfLiteDelegatePtr> delegates;
-  if (use_nnapi == 1) {
-    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(tflite::NnApiDelegate(), [](TfLiteDelegate*) {});
-    if (!delegate) {
+  if (use_nnapi == 1)
+  {
+    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(tflite::NnApiDelegate(), [](TfLiteDelegate *) {});
+    if (!delegate)
+    {
       printf("NNAPI acceleration is unsupported on this platform.\n");
-    } else {
+    }
+    else
+    {
       delegates.emplace("NNAPI", std::move(delegate));
     }
-  } else if (use_nnapi == 2) {
+  }
+  else if (use_nnapi == 2)
+  {
     auto ext_delegate_option = TfLiteExternalDelegateOptionsDefault("/usr/lib/libvx_delegate.so");
     auto ext_delegate_ptr = TfLiteExternalDelegateCreate(&ext_delegate_option);
-    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(ext_delegate_ptr, [](TfLiteDelegate*) {});
-    if (!delegate) {
+    auto delegate = tflite::Interpreter::TfLiteDelegatePtr(ext_delegate_ptr, [](TfLiteDelegate *) {});
+    if (!delegate)
+    {
       printf("vx-delegate backend is unsupported on this platform.");
-    } else {
+    }
+    else
+    {
       delegates.emplace("vx-delegate", std::move(delegate));
     }
   }
 
-  for (const auto& delegate : delegates) {
-    if (interpreter_->ModifyGraphWithDelegate(delegate.second.get()) != kTfLiteOk) {
+  for (const auto &delegate : delegates)
+  {
+    if (interpreter_->ModifyGraphWithDelegate(delegate.second.get()) != kTfLiteOk)
+    {
       printf("Failed to apply %s delegate.", delegate.first.c_str());
       return ERROR;
-    } 
+    }
   }
   return OK;
 }
@@ -161,20 +178,23 @@ int tflite_inference_t::apply_delegate(
 int tflite_inference_t::inference(void)
 {
   // tflite inference
-  if (interpreter_->Invoke() != kTfLiteOk) {
+  if (interpreter_->Invoke() != kTfLiteOk)
+  {
     return ERROR;
   }
-  
+
   return OK;
 }
 
 int tflite_inference_t::get_input_tensor_shape(
-  std::vector<int> *shape)
+    std::vector<int> *shape)
 {
   shape->clear();
   TfLiteIntArray *dims = interpreter_->tensor(interpreter_->inputs()[0])->dims;
-  if (dims) {
-    for (int i = 0; i < dims->size; i++) {
+  if (dims)
+  {
+    for (int i = 0; i < dims->size; i++)
+    {
       shape->push_back(dims->data[i]);
     }
   }
@@ -182,63 +202,73 @@ int tflite_inference_t::get_input_tensor_shape(
 }
 
 int tflite_inference_t::get_input_tensor(
-  uint8_t **ptr,
-  size_t* sz)
+    uint8_t **ptr,
+    size_t *sz)
 {
   *ptr = typed_input_tensor<uint8_t>(0, sz);
   return OK;
 }
 
 int tflite_inference_t::get_input_tensor(
-	float** ptr,
-	size_t* sz)
+    float **ptr,
+    size_t *sz)
 {
-	*ptr = typed_input_tensor<float>(0, sz);
-	return OK;
+  *ptr = typed_input_tensor<float>(0, sz);
+  return OK;
 }
 
 int tflite_inference_t::setup_input_tensor(
-	std::vector<int> framedim,
-	uint8_t* paddr)
+    std::vector<int> framedim,
+    uint8_t *paddr)
 {
-	std::vector<int> shape;
-	get_input_tensor_shape(&shape);
-	// GET TYPE
-	TfLiteType inputTensorType = interpreter_.get()->input_tensor(0)->type;
-	// paddr must arrive at correct length
-	int ret = OK;
-	size_t sz = 0;
-	if (inputTensorType == TfLiteType::kTfLiteUInt8) {
-		uint8_t* rgb = 0; // error prone
-		ret = get_input_tensor(&rgb, &sz);
-		if (ret == OK) {
-			std::copy(paddr, paddr + sz, rgb);
-			return OK;
-		}
-		else
-		{
-			return ERROR;
-		}
-	}
-	else {
-		float* rgb = 0; // error prone
-		ret = get_input_tensor(&rgb, &sz);
-		if (ret == OK) {
-			std::copy(paddr, paddr + sz, rgb);
-			return OK;
-		}
-		else
-		{
-			return ERROR;
-		}
-	}
+  std::vector<int> shape;
+  get_input_tensor_shape(&shape);
+  printf("Got Input tensor");
+  // GET TYPE
+  TfLiteType inputTensorType = interpreter_->tensor(interpreter_->inputs()[0])->type;
+  printf("Got Input type");
+  // paddr must arrive at correct length
+  int ret = OK;
+  size_t sz = 0;
+  if (inputTensorType == TfLiteType::kTfLiteUInt8)
+  {
+	printf("tensor type is uint8");
+    uint8_t *rgb = 0; // error prone
+    ret = get_input_tensor(&rgb, &sz);
+    if (ret == OK)
+    {
+	  printf("copied image into input!");
+      std::copy(paddr, paddr + sz, rgb);
+      return OK;
+    }
+    else
+    {
+      return ERROR;
+    }
+  }
+  else
+  {
+	printf("tensor type is float");
+    float *rgb = 0; // error prone
+    ret = get_input_tensor(&rgb, &sz);
+    if (ret == OK)
+    {
+	  printf("copied image into input!");
+      std::copy(paddr, paddr + sz, rgb);
+      return OK;
+    }
+    else
+    {
+      return ERROR;
+    }
+  }
 }
 
 int tflite_inference_t::setup_input_tensor(
-  int frame_height,
-  int frame_width,
-  int frame_depth,
-  uint8_t *paddr)
+    int frame_height,
+    int frame_width,
+    int frame_depth,
+    uint8_t *paddr)
 {
   // initial inference test
   int tensor_width = 0;
@@ -249,22 +279,24 @@ int tflite_inference_t::setup_input_tensor(
   tensor_height = shape[1];
   tensor_width = shape[2];
   tensor_channels = shape[3];
-  if ((tensor_height != frame_height) || (tensor_width != frame_width) || (tensor_channels != frame_depth)) {
+  if ((tensor_height != frame_height) || (tensor_width != frame_width) || (tensor_channels != frame_depth))
+  {
     printf("Input image size is not supported\n");
     return ERROR;
   }
-  
+
   int ret = OK;
   size_t sz = 0;
   uint8_t *rgb = 0;
   ret = get_input_tensor(&rgb, &sz);
-  
-  if (ret == OK) {
-	std::copy(paddr, paddr + sz, rgb);
-	return OK;
+
+  if (ret == OK)
+  {
+    std::copy(paddr, paddr + sz, rgb);
+    return OK;
   }
   else
   {
-	return ERROR;
+    return ERROR;
   }
 }
