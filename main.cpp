@@ -42,7 +42,7 @@ std::vector<uint8_t> ReadBmp(const std::string &filename, ImageDims *out_dims)
   if (offset > kBmpHeaderSize)
     file.seekg(offset - kBmpHeaderSize, std::ios::cur);
 
-  int width = ToInt32(&info_header[4]);./
+  int width = ToInt32(&info_header[4]);
 
   int height = ToInt32(&info_header[8]);
   const bool top_down = height < 0;
