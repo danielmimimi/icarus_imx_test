@@ -78,19 +78,38 @@ std::vector<uint8_t> ReadBmp(const std::string &filename, ImageDims *out_dims)
 
 int main(void)
 {
+  bool posenet = false;
+  bool mnist = true;
   coralIcarusInference inferencer;
+  std::string modelName;
+  if (mnist)
+  {
+    modelName = "mnist_pytorch_onnx_8_bit_edgetpu.tflite";
+  }
+  if (posenet)
+  {
+    modelName = "posenet_mobilenet_v1_075_353_481_quant_decoder.tflite";
+  }
 
-  std::string modelName = "posenet_mobilenet_v1_075_353_481_quant_decoder.tflite";
   std::vector<int32_t> outImageDimensions;
   inferencer.init(modelName, outImageDimensions, 2, 4);
 
   std::cout
-      << "inputsize 1 :" + outImageDimensions[1] << std::endl;
+      << "inputsize 1 :" + std::to_string(outImageDimensions[1]) << std::endl;
 
   ImageDims image_dims;
-  std::vector<uint8_t> input = ReadBmp("persons.bmp", &image_dims);
+  std::vector<uint8_t> input;
+  if (posenet)
+  {
+    input = ReadBmp("persons.bmp", &image_dims);
+  }
+  if (mnist)
+  {
+    input = ReadBmp("three.bmp", &image_dims);
+  }
+
   auto start = std::chrono::high_resolution_clock::now();
-  int amountOfInferences = 10000;
+  int amountOfInferences = 10;
   for (int i = 0; i < amountOfInferences; i++)
   {
     std::vector<tensorResultToPassOn *> outResults;

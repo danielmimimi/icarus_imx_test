@@ -22,6 +22,9 @@
 #define tflite_inference_h
 
 #include "tensorflow/lite/kernels/register.h"
+#include "tensorflow/lite/model_builder.h"
+#include <vector>
+
 
 class tflite_inference_t{
 public:
@@ -48,8 +51,10 @@ public:
   
   int setup_input_tensor(int frame_height,int frame_width,int frame_depth, uint8_t *paddr);
   int setup_input_tensor(std::vector<int> framedim,uint8_t* paddr);//DKLA
+  int setup_input_tensor_fast(uint8_t* paddr);
 
 protected:
+
 
   template <typename T>
   T* typed_tensor(
@@ -143,8 +148,7 @@ protected:
 
 private:
 
-  int apply_delegate(
-    int use_nnapi);
+  int apply_delegate(int use_nnapi);
 
   std::unique_ptr<tflite::FlatBufferModel> model_;
 };

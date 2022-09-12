@@ -48,6 +48,8 @@
         "xtr1common": "cpp",
         "xtree": "cpp",
         "xutility": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "ratio": "cpp",
+        "sstream": "cpp"
     }
 }
