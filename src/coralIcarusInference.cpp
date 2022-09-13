@@ -6,10 +6,6 @@ coralIcarusInference::coralIcarusInference()
 
 coralIcarusInference::~coralIcarusInference()
 {
-	if (mInferencer != NULL)
-	{
-		delete mInferencer;
-	}
 }
 
 void coralIcarusInference::init(const std::string &modelPath, std::vector<int32_t> &outImageDimensions, int use_nnapi, int num_threads)

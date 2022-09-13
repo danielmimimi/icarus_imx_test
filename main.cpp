@@ -8,6 +8,10 @@
 #include <fstream>
 #include <string>
 
+#include <opencv2/imgproc.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc/imgproc_c.h>
+
 #include <chrono>
 
 typedef unsigned char uint8_t;

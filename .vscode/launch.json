@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/",
+            "program": "${workspaceFolder}/main",
+            "stopAtEntry": false,
+            "targetArchitecture": "arm64",
+            "environment": [
+                {
+                    "name": "LD_LIBRARY_PATH",
+                    "value": "/home/root/general_inference_imx8"
+                }
+            ],
+            "launchCompleteCommand": "exec-run",
+            "linux": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "/usr/bin/gdb"
+            },
+            "setupCommands": [
+                {
+                    "description": "Set other cpp files path into debugger",
+                    "text": "set directories /home/root/general_inference_imx8/src",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}
