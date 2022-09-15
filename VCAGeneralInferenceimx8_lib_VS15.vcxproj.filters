@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="docu">
+      <UniqueIdentifier>{2cf44542-3907-497f-a3a1-f69695ea7e43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{674a30b5-3ae6-41b1-829d-fafcc9a82152}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{07289afe-af9b-4357-bf74-a9a7fe8f4c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="docu\images">
+      <UniqueIdentifier>{90e8e98c-76dc-478a-a3ac-abfa4a236ef0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\VcaProcBaseData.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VcaProcMain.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VcaProcBaseProcess.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="docu\VcaProcUserManualDoxygen.h">
+      <Filter>docu</Filter>
+    </ClInclude>
+    <ClInclude Include="docu\images\VcaProcBasicClassDiagram.h">
+      <Filter>docu\images</Filter>
+    </ClInclude>
+    <ClInclude Include="docu\images\VcaProcBasicSequenceDiagram.h">
+      <Filter>docu\images</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VcaProcProcessTimer.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\VcaProcBaseData.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VcaProcMain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VcaProcBaseProcess.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VcaProcProcessTimer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

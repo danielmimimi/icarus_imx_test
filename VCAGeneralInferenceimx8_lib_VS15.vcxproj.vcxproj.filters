@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{54617419-f644-4288-b300-b16c6193d5bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{151babf6-e4e1-4c71-803c-83a4023fbf0b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\coralIcarusInference.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\general_inferencer.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tensorResultToPassOn.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tensorResultToPassOnFloat.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tensorResultToPassOnUint8.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tflite_inference.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\coralIcarusInference.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\general_inferencer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tflite_inference.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="tensorResultToPassOnUint8.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="coralIcarusInterface.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="tensorResultToPassOn.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="tensorResultToPassOnFloat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Makefile.am">
+      <Filter>src</Filter>
+    </None>
+    <None Include="src\Makefile.in">
+      <Filter>src</Filter>
+    </None>
+  </ItemGroup>
+</Project>

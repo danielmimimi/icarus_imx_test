@@ -1,0 +1,25 @@
+﻿  coralIcarusInference.cpp
+  general_inferencer.cpp
+  tensorResultToPassOn.cpp
+  tensorResultToPassOnFloat.cpp
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\numeric(20): warning C4244: 'argument': conversion from 'const int' to 'const float', possible loss of data
+  C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\numeric(30): note: see reference to function template instantiation '_Ty std::_Accumulate_unchecked<const int*,_Ty,_Fn2>(_InIt,_InIt,_Ty,_Fn2 &)' being compiled
+          with
+          [
+              _Ty=int,
+              _Fn2=std::multiplies<float>,
+              _InIt=const int *
+          ]
+  src\tensorResultToPassOnFloat.cpp(22): note: see reference to function template instantiation '_Ty std::accumulate<std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<int>>>,int,std::multiplies<float>>(_InIt,_InIt,_Ty,_Fn2)' being compiled
+          with
+          [
+              _Ty=int,
+              _InIt=std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<int>>>,
+              _Fn2=std::multiplies<float>
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\numeric(20): warning C4244: 'argument': conversion from 'int' to 'const float', possible loss of data
+C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\include\numeric(20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  tensorResultToPassOnUint8.cpp
+  tflite_inference.cpp
+  Generating Code...
+  VCAGeneralInferenceimx8_lib_VS15.vcxproj.vcxproj -> C:\projects\icarus\trunk\externals\general_inference_imx8\\lib\Release_x64\libposenetimx8.lib

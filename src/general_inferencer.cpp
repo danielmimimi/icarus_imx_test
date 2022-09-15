@@ -59,7 +59,12 @@ void generalInferencer::inference(const std::vector<uint8_t> &inputImage, std::v
 
 void generalInferencer::packoutput(std::vector<tensorResultToPassOn*> &outResults)
 {
+
+#ifdef WITHOUT_TENSORFLOW
+    std::vector<int> outputs;
+#else
     std::vector<int> outputs = interpreter_->outputs();
+#endif
     for (int i = 0; i < (int)outputs.size(); i++)
     {     
         outResults.push_back(packTesor(i));
@@ -68,6 +73,8 @@ void generalInferencer::packoutput(std::vector<tensorResultToPassOn*> &outResult
 
 tensorResultToPassOn* generalInferencer::packTesor(int currentTensorIndex)
 {
+#ifdef WITHOUT_TENSORFLOW
+#else
     TfLiteType inputTensorType = interpreter_.get()->output_tensor(currentTensorIndex)->type;
     if (inputTensorType == TfLiteType::kTfLiteUInt8) {
         tensorResultToPassOnUint8* outTensor = new tensorResultToPassOnUint8();
@@ -105,6 +112,6 @@ tensorResultToPassOn* generalInferencer::packTesor(int currentTensorIndex)
         memcpy(outTensor->data, interpreter_.get()->output_tensor(currentTensorIndex)->data.f, sizeOfvector);
         return outTensor;
     }
-
-
+#endif
+    return new tensorResultToPassOn();
 }

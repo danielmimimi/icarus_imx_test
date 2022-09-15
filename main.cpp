@@ -7,11 +7,7 @@
 #include <ostream>
 #include <fstream>
 #include <string>
-
-#include <opencv2/imgproc.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc/imgproc_c.h>
-
+#include <numeric>
 #include <chrono>
 
 typedef unsigned char uint8_t;
@@ -83,7 +79,8 @@ std::vector<uint8_t> ReadBmp(const std::string &filename, ImageDims *out_dims)
 int main(void)
 {
   bool posenet = false;
-  bool mnist = true;
+  bool mnist = false;
+  bool ssd = true;
   coralIcarusInference inferencer;
   std::string modelName;
   if (mnist)
@@ -94,9 +91,22 @@ int main(void)
   {
     modelName = "posenet_mobilenet_v1_075_353_481_quant_decoder.tflite";
   }
+  if (ssd)
+  {
+    modelName = "mobilenet_ssd_v2_coco_quant_postprocess.tflite";
+  }
 
+  std::ifstream file(modelName);
   std::vector<int32_t> outImageDimensions;
-  inferencer.init(modelName, outImageDimensions, 2, 4);
+  if (file.is_open())
+  {
+    file.close();
+    inferencer.init(modelName, outImageDimensions, 2, 4);
+  }
+  else
+  {
+    throw std::runtime_error("Path to model does not exist");
+  }
 
   std::cout
       << "inputsize 1 :" + std::to_string(outImageDimensions[1]) << std::endl;
@@ -111,13 +121,63 @@ int main(void)
   {
     input = ReadBmp("three.bmp", &image_dims);
   }
+  if (ssd)
+  {
+    input = ReadBmp("persons_ssd.bmp", &image_dims);
+  }
 
   auto start = std::chrono::high_resolution_clock::now();
-  int amountOfInferences = 10;
+  int amountOfInferences = 1;
   for (int i = 0; i < amountOfInferences; i++)
   {
     std::vector<tensorResultToPassOn *> outResults;
     inferencer.inference(input, outResults);
+
+    for (int i = 0; i < outResults.size(); i++)
+    {
+      std::ofstream myFile_Handler, myFile_Handler_dim;
+      myFile_Handler.open(outResults.at(i)->name + ".txt");
+      myFile_Handler_dim.open(outResults.at(i)->name + "_dim.txt");
+      if (myFile_Handler.is_open())
+      {
+        if (myFile_Handler_dim.is_open())
+        {
+          for (int k = 0; k < outResults.at(i)->dimensions.size(); k++)
+          {
+            myFile_Handler_dim << outResults.at(i)->dimensions.at(k) << std::endl;
+          }
+        }
+        if (typeid(*outResults.at(i)) == typeid(tensorResultToPassOnFloat))
+        {
+          tensorResultToPassOnFloat *floatTensor = dynamic_cast<tensorResultToPassOnFloat *>(outResults.at(i));
+          int sizeOfvector = std::accumulate(floatTensor->dimensions.begin(), floatTensor->dimensions.end(), 1, std::multiplies<int>());
+          std::vector<float> dest(floatTensor->data, floatTensor->data + sizeOfvector);
+          for (int vecSize = 0; vecSize < dest.size(); vecSize++)
+          {
+            if (dest.at(vecSize) == 0)
+            {
+              myFile_Handler << dest.at(vecSize) << ".f," << std::endl;
+            }
+            else
+            {
+              myFile_Handler << dest.at(vecSize) << "f," << std::endl;
+            }
+          }
+        }
+        if (typeid(*outResults.at(i)) == typeid(tensorResultToPassOnUint8))
+        {
+          tensorResultToPassOnUint8 *uint8Tensor = dynamic_cast<tensorResultToPassOnUint8 *>(outResults.at(i));
+          int sizeOfvector = std::accumulate(uint8Tensor->dimensions.begin(), uint8Tensor->dimensions.end(), 1, std::multiplies<int>());
+          std::vector<uint8_t> dest(uint8Tensor->data, uint8Tensor->data + sizeOfvector);
+          for (int vecSize = 0; vecSize < dest.size(); vecSize++)
+          {
+            myFile_Handler << dest.at(vecSize) << "," << std::endl;
+          }
+        }
+      }
+      myFile_Handler.close();
+      myFile_Handler_dim.close();
+    }
   }
   auto stop = std::chrono::high_resolution_clock::now();
   auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);

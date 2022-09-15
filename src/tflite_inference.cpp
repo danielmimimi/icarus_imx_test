@@ -23,18 +23,21 @@
 #endif
 
 #include "tflite_inference.h"
-
+#ifdef WITHOUT_TENSORFLOW
+#else
 // google-coral/edgetpu
 #include "posenet/posenet_decoder_op.h"
+#endif
 #ifdef BUILD_WITH_EDGETPU
 #include "edgetpu.h"
 #endif
-
 // tensorflow/lite
+#ifdef WITHOUT_TENSORFLOW
+#else
 #include <tensorflow/lite/optional_debug_tools.h>
 #include <tensorflow/lite/delegates/nnapi/nnapi_delegate.h>
 #include <tensorflow/lite/delegates/external/external_delegate.h>
-
+#endif
 // std
 #include <map>
 #include <fstream>
@@ -46,8 +49,11 @@ tflite_inference_t::tflite_inference_t()
 
 tflite_inference_t::~tflite_inference_t()
 {
+#ifdef WITHOUT_TENSORFLOW
+#else
   model_.reset();
   interpreter_.reset();
+#endif
 }
 
 int tflite_inference_t::init(
@@ -61,7 +67,8 @@ int tflite_inference_t::init(
     printf ("Failed to open %s", model.c_str());
     return ERROR;
   }
-
+#ifdef WITHOUT_TENSORFLOW
+#else
   model_ = tflite::FlatBufferModel::BuildFromFile(model.c_str());
   if (!model_) {
     printf ("Failed to mmap model %s", model.c_str());
@@ -124,13 +131,15 @@ int tflite_inference_t::init(
     printf("Failed to invoke TFLite interpreter");
     return ERROR;
   }
-
+#endif
   return OK;
 }
 
 int tflite_inference_t::apply_delegate(
   int use_nnapi)
 {
+#ifdef WITHOUT_TENSORFLOW
+#else
   // assume TFLite v2.0 or newer
   std::map<std::string, tflite::Interpreter::TfLiteDelegatePtr> delegates;
   if (use_nnapi == 1) {
@@ -157,22 +166,27 @@ int tflite_inference_t::apply_delegate(
       return ERROR;
     } 
   }
+#endif
   return OK;
 }
 
 int tflite_inference_t::inference(void)
 {
+#ifdef WITHOUT_TENSORFLOW
+#else
   // tflite inference
   if (interpreter_->Invoke() != kTfLiteOk) {
     return ERROR;
   }
-  
+#endif
   return OK;
 }
 
 int tflite_inference_t::get_input_tensor_shape(
   std::vector<int> *shape)
 {
+#ifdef WITHOUT_TENSORFLOW
+#else
   shape->clear();
   TfLiteIntArray *dims = interpreter_->tensor(interpreter_->inputs()[0])->dims;
   if (dims) {
@@ -180,6 +194,7 @@ int tflite_inference_t::get_input_tensor_shape(
       shape->push_back(dims->data[i]);
     }
   }
+#endif
   return OK;
 }
 
@@ -203,12 +218,13 @@ int tflite_inference_t::setup_input_tensor(
     std::vector<int> framedim,
     uint8_t *paddr)
 {
+#ifdef WITHOUT_TENSORFLOW
+    return 1;
+#else
   std::vector<int> shape;
   get_input_tensor_shape(&shape);
-  printf("Got Input tensor");
   // GET TYPE
   TfLiteType inputTensorType = interpreter_->tensor(interpreter_->inputs()[0])->type;
-  printf("Got Input type");
   // paddr must arrive at correct length
   int ret = OK;
   size_t sz = 0;
@@ -244,6 +260,7 @@ int tflite_inference_t::setup_input_tensor(
       return ERROR;
     }
   }
+#endif
 }
 
 int tflite_inference_t::setup_input_tensor(
@@ -252,40 +269,45 @@ int tflite_inference_t::setup_input_tensor(
   int frame_depth,
   uint8_t *paddr)
 {
-  std::cout << "entered function" <<std::endl;
-  // initial inference test
-  int tensor_width = 0;
-  int tensor_height = 0;
-  int tensor_channels = 0;
-  std::vector<int> shape;
-  get_input_tensor_shape(&shape);
-  tensor_height = shape[1];
-  tensor_width = shape[2];
-  tensor_channels = shape[3];
-  std::cout << "entered function" <<std::endl;
-  if ((tensor_height != frame_height) || (tensor_width != frame_width) || (tensor_channels != frame_depth)) {
-    printf("Input image size is not supported\n");
-    return ERROR;
-  }
-  
-  int ret = OK;
-  size_t sz = 0;
-  uint8_t *rgb = 0;
-  ret = get_input_tensor(&rgb, &sz);
-  
-  if (ret == OK) {
-	std::copy(paddr, paddr + sz, rgb);
-	return OK;
-  }
-  else
-  {
-	return ERROR;
-  }
+#ifdef WITHOUT_TENSORFLOW
+    return OK;
+#else
+    // initial inference test
+    int tensor_width = 0;
+    int tensor_height = 0;
+    int tensor_channels = 0;
+    std::vector<int> shape;
+    get_input_tensor_shape(&shape);
+    tensor_height = shape[1];
+    tensor_width = shape[2];
+    tensor_channels = shape[3];
+    if ((tensor_height != frame_height) || (tensor_width != frame_width) || (tensor_channels != frame_depth)) {
+        printf("Input image size is not supported\n");
+        return ERROR;
+    }
+
+    int ret = OK;
+    size_t sz = 0;
+    uint8_t* rgb = 0;
+    ret = get_input_tensor(&rgb, &sz);
+
+    if (ret == OK) {
+        std::copy(paddr, paddr + sz, rgb);
+        return OK;
+    }
+    else
+    {
+        return ERROR;
+}
+#endif
 }
 
 
 int tflite_inference_t::setup_input_tensor_fast(uint8_t* paddr)
 {
+#ifdef WITHOUT_TENSORFLOW
+    return 1;
+#else
 	TfLiteType inputTensorType = interpreter_->tensor(interpreter_->inputs()[0])->type;
 	//printf("Got Input type");
 	int ret = OK;
@@ -322,4 +344,5 @@ int tflite_inference_t::setup_input_tensor_fast(uint8_t* paddr)
 			return ERROR;
 		}
 	}
+#endif
 }

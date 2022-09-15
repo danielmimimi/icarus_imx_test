@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="coralIcarusInterface.h" />
+    <ClInclude Include="src\coralIcarusInference.h" />
+    <ClInclude Include="src\general_inferencer.h" />
+    <ClInclude Include="src\tflite_inference.h" />
+    <ClInclude Include="tensorResultToPassOn.h" />
+    <ClInclude Include="tensorResultToPassOnFloat.h" />
+    <ClInclude Include="tensorResultToPassOnUint8.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\coralIcarusInference.cpp" />
+    <ClCompile Include="src\general_inferencer.cpp" />
+    <ClCompile Include="src\tensorResultToPassOn.cpp" />
+    <ClCompile Include="src\tensorResultToPassOnFloat.cpp" />
+    <ClCompile Include="src\tensorResultToPassOnUint8.cpp" />
+    <ClCompile Include="src\tflite_inference.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Makefile.am" />
+    <None Include="src\Makefile.in" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D30840A3-8B38-41C9-B004-FAC2422A6844}</ProjectGuid>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>AhAlgorithmLib</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>VCAGeneralInferenceimx8_lib_VS15</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CLRSupport>false</CLRSupport>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</IntDir>
+    <TargetName>VCAProcess_lib</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</IntDir>
+    <TargetName>libposenetimx8</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</IntDir>
+    <TargetName>VCAProcess_lib</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</OutDir>
+    <IntDir>$(ProjectDir)\lib\$(Configuration)_$(Platform)\</IntDir>
+    <TargetName>libposenetimx8</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WITHOUT_TENSORFLOW;WIN32;_DEBUG;RUN_MODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;..\VCAParamHandler_lib\include;..\VCAUtils_lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ShowIncludes>false</ShowIncludes>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WITHOUT_TENSORFLOW;WIN32;_DEBUG;RUN_MODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>StdAfx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <ShowIncludes>false</ShowIncludes>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WITHOUT_TENSORFLOW;WIN32;NDEBUG;RUN_MODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;..\VCAParamHandler_lib\include;..\VCAUtils_lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WITHOUT_TENSORFLOW;WIN32;NDEBUG;RUN_MODE=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;..\VCAParamHandler_lib\include;..\VCAUtils_lib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>
+      </AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
