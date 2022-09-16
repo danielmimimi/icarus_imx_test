@@ -6,38 +6,42 @@
 # Tensorflow Lite
 TFLITE_LIBS = -ltensorflow-lite
 
+AUTOMAKE_OPTIONS = subdir-objects
 ##############################################################################
 # libposenetimx8.la
 ##############################################################################
-plugin_LTLIBRARIES = libposenetimx8.la
+plugin_LTLIBRARIES = libposenetimx8.la 
+# Probably the name
 
 #bin_PROGRAMS = gstnninferencedemo
 HEADERS_TF = \
-  src\general_inferencer.h \
-  src\tflite_inference.h \
-  include\tensorResultToPassOn.h \
-  include\tensorResultToPassOnFloat.h \
-  include\tensorResultToPassOnUint8.h \
-  src\coralIcarusInference.h \
-  include\coralIcarusInterface.h
+  include/tensorResultToPassOn.h \
+  include/tensorResultToPassOnFloat.h \
+  include/tensorResultToPassOnUint8.h \
+  include/coralIcarusInterface.h 
 
 SOURCES_TF = \
-  src\general_inferencer.cpp \
-  src\tflite_inference.cpp \
-  src\tensorResultToPassOn.cpp \
-  src\tensorResultToPassOnFloat.cpp \
-  src\tensorResultToPassOnUint8.cpp \
-  src\coralIcarusInference.cpp
+  src/general_inferencer.cpp \
+  src/tflite_inference.cpp \
+  src/tensorResultToPassOn.cpp \
+  src/tensorResultToPassOnFloat.cpp \
+  src/tensorResultToPassOnUint8.cpp \
+  src/coralIcarusInference.cpp \
+  src/coralIcarusInference.h \
+  src/general_inferencer.h \
+  src/tflite_inference.h 
+
+
 
 noinst_HEADERS = $(HEADERS_TF)
 libposenetimx8_la_SOURCES = $(SOURCES_TF)
 
 if USE_ION
-libposenetimx8_la_CFLAGS = -DUSE_ION
+libposenetimx8_la_CFLAGS = -DUSE_ION -I$(srcdir)/include -I$(srcdir)/src 
 endif
 
 libposenetimx8_la_CXXFLAGS = \
-  $(libposenetimx8_la_CFLAGS)
+  $(libposenetimx8_la_CFLAGS) -I$(srcdir)/include -I$(srcdir)/src 
 
 libposenetimx8_la_LIBADD = \
   $(TFLITE_LIBS) \
